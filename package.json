@@ -1,0 +1,19 @@
+{
+  "name": "uniqolor",
+  "version": "0.0.1",
+  "description": "Generate unique and beautiful colors from any texts or numbers",
+  "author": "Rasool Dastoori",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dastoori/uniqolor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dastoori/uniqolor/issues"
+  },
+  "homepage": "https://github.com/dastoori/uniqolor#README",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
