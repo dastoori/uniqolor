@@ -1,4 +1,23 @@
 {
+  "env": {
+    "test": {
       "presets": ["env"],
       "plugins": ["transform-object-rest-spread"]
+    },
+    "development": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "browsers": "last 2 versions",
+            "uglify": true
+          }
+        }]
+      ],
+      "plugins": [
+        "external-helpers",
+        "transform-object-rest-spread"
+      ]
+    }
+  }
 }
