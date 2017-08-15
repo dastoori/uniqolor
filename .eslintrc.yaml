@@ -1,0 +1,54 @@
+---
+root: true
+env:
+  es6: true
+  browser: true
+  node: true
+  jasmine: true
+  jest: true
+
+parser: babel-eslint
+extends: airbnb
+plugins: [jasmine]
+
+rules:
+  arrow-parens: [2, as-needed]
+  func-names: [2, as-needed]
+  no-plusplus: [2, allowForLoopAfterthoughts: true]
+  no-bitwise: 0
+  no-multi-assign: 0
+  no-param-reassign: 0
+  padding-line-between-statements:
+    - 2
+    -
+      blankLine: always
+      prev: '*'
+      next: return
+    -
+      blankLine: always
+      prev: [const, let, var]
+      next: '*'
+    -
+      blankLine: always
+      prev: '*'
+      next: [const, let, var]
+    -
+      blankLine: any
+      prev: [const, let, var]
+      next: [const, let, var]
+    -
+      blankLine: always
+      prev: directive
+      next: '*'
+    -
+      blankLine: any
+      prev: directive
+      next: directive
+    -
+      blankLine: always
+      prev: '*'
+      next: block-like
+    -
+      blankLine: always
+      prev: block-like
+      next: '*'
