@@ -3,7 +3,17 @@
   "version": "0.0.1",
   "description": "Generate unique and beautiful colors from any texts or numbers",
   "author": "Rasool Dastoori",
-  "main": "lib/index.js",
+  "main": "src/index.js",
+  "keywords": [
+    "uniqolor",
+    "uniqcolor",
+    "color",
+    "unique",
+    "random",
+    "lightweight",
+    "uuid",
+    "generate-color"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dastoori/uniqolor.git"
