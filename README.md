@@ -1,6 +1,7 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/2003143/29374843-1fa78a3e-82c8-11e7-80a3-0786f899749d.png" alt="uniqolor logo" />
 </p>
+
 <p align="center">
   <a href="https://travis-ci.org/dastoori/uniqolor"><img src="https://travis-ci.org/dastoori/uniqolor.svg?branch=master" alt="Build status" /></a>
   <a href="https://github.com/dastoori/uniqolor/releases"><img src="https://img.shields.io/github/release/dastoori/uniqolor.svg" alt="GitHub release" /></a>
@@ -84,6 +85,10 @@ uniqolor.random({
 })
 // { color: "#c7b9da", isLight: true }
 ```
+
+## Examples
+
+- [Avatar](https://rawgit.com/dastoori/uniqolor/master/examples/avatar/index.html)
 
 ## API
 
