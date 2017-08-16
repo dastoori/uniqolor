@@ -31,7 +31,7 @@ describe('src/index', () => {
 
       expect(result).toEqual({
         color: '#4db35f',
-        isLight: true,
+        isLight: false,
       });
     });
 
