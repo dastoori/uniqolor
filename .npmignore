@@ -1,1 +1,9 @@
 examples
+.babelrc
+.eslintcache
+.eslintignore
+.eslintrc.yaml
+.npmignore
+.travis.yml
+coverage
+rollup.config.js
