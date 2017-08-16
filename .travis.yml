@@ -6,12 +6,13 @@ node_js:
   - '6'
   - '4'
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.24.6
-  - export PATH="$HOME/.yarn/bin:$PATH"
+  - npm install -g npm
 install:
-  - yarn install
+  - npm install
 script:
-  - yarn run validate
+  - npm run validate
 after_script:
-  - yarn run codecov
-cache: yarn
+  - npm run codecov
+cache:
+  directories:
+    - node_modules
