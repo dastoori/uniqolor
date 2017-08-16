@@ -38,4 +38,7 @@ Thumbs.db
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+### Project ###
+dist
+
 # End of https://www.gitignore.io/api/node,macos,windows

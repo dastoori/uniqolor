@@ -1,7 +1,8 @@
 /**
  * Generate unique and beautiful colors from any texts or numbers
- * @version v0.0.1
+ * @version v0.8.0
  * @link https://github.com/dastoori/uniqolor#README
+ * @author Rasool Dastoori
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 (function (global, factory) {
@@ -229,14 +230,14 @@ var rgbFormat = function rgbFormat(r, g, b, format) {
 };
 
 /**
- * Generate unique color from `str`
+ * Generate unique color from `value`
  * @param  {string|number} value
  * @param  {Object}        [options={}]
  * @param  {string}        [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {string}        [options.saturateRange=[50, 55]]
+ * @param  {number|Array}  [options.saturateRange=[50, 55]]
  *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {string}        [options.lightnessRange=[50, 60]]
+ * @param  {number|Array}  [options.lightnessRange=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
  * @return {Object}
  * @example
@@ -281,13 +282,12 @@ var uniqolor = function uniqolor(value) {
 
 /**
  * Generate random color
- * @param  {string|number} value
- * @param  {Object}        [options={}]
- * @param  {string}        [options.format='hex']
+ * @param  {Object}       [options={}]
+ * @param  {string}       [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {string}        [options.saturateRange=[40, 55]]
+ * @param  {number|Array} [options.saturateRange=[50, 55]]
  *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {string}        [options.lightnessRange=[50, 60]]
+ * @param  {number|Array} [options.lightnessRange=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
  * @return {Object}
  * @example
