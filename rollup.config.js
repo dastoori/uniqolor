@@ -9,6 +9,7 @@ const banner =
  * ${pkg.description}
  * @version v${pkg.version}
  * @link ${pkg.homepage}
+ * @author ${pkg.author}
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */`;
 const plugins = [

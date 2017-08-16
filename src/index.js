@@ -156,14 +156,14 @@ const rgbFormat = (r, g, b, format) => {
 };
 
 /**
- * Generate unique color from `str`
+ * Generate unique color from `value`
  * @param  {string|number} value
  * @param  {Object}        [options={}]
  * @param  {string}        [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {string}        [options.saturateRange=[50, 55]]
+ * @param  {number|Array}  [options.saturateRange=[50, 55]]
  *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {string}        [options.lightnessRange=[50, 60]]
+ * @param  {number|Array}  [options.lightnessRange=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
  * @return {Object}
  * @example
@@ -201,13 +201,12 @@ const uniqolor = (value, {
 
 /**
  * Generate random color
- * @param  {string|number} value
- * @param  {Object}        [options={}]
- * @param  {string}        [options.format='hex']
+ * @param  {Object}       [options={}]
+ * @param  {string}       [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {string}        [options.saturateRange=[40, 55]]
+ * @param  {number|Array} [options.saturateRange=[50, 55]]
  *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {string}        [options.lightnessRange=[50, 60]]
+ * @param  {number|Array} [options.lightnessRange=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
  * @return {Object}
  * @example

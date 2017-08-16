@@ -30,7 +30,7 @@
     "validate": "npm run lint && npm test",
     "precommit": "npm run lint",
     "prepush": "npm test",
-    "prepublish": "npm run validate && npm build"
+    "prepublishOnly": "npm run validate && npm build"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
