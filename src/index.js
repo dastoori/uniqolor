@@ -126,7 +126,7 @@ const hslToRgb = (h, s, l) => {
  * @param  {number}  b Blue
  * @return {boolean}
  */
-const rgbIsLight = (r, g, b) => ((r * 299) + (g * 587) + (b * 114)) / 1000 >= 125;
+const rgbIsLight = (r, g, b) => ((r * 299) + (g * 587) + (b * 114)) / 1000 >= 140;
 
 /**
  * Converts an HSL color to string format
