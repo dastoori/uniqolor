@@ -26,7 +26,8 @@
   "scripts": {
     "build": "rollup -c && rollup -c --environment MINIFY",
     "test": "jest",
-    "codecov": "jest --coverage",
+    "coverage": "jest --coverage",
+    "codecov": "jest --coverage && codecov",
     "lint": "eslint --cache src/",
     "validate": "npm run lint && npm test",
     "precommit": "npm run lint",

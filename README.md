@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://travis-ci.org/dastoori/uniqolor"><img src="https://api.travis-ci.org/dastoori/uniqolor.svg?branch=master" alt="Build status" /></a>
+  <a href="https://codecov.io/gh/dastoori/uniqolor"><img src="https://img.shields.io/codecov/c/github/dastoori/uniqolor.svg" alt="Coverage report" /></a>
   <a href="https://github.com/dastoori/uniqolor/releases"><img src="https://img.shields.io/github/release/dastoori/uniqolor.svg" alt="GitHub release" /></a>
   <a href="https://www.npmjs.com/package/uniqolor"><img src="https://img.shields.io/npm/dm/uniqolor.svg" alt="npm downloads" /></a>
   <a href="https://raw.githubusercontent.com/dastoori/uniqolor/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" /></a></p>
