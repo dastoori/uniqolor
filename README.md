@@ -2,8 +2,9 @@
   <img src="https://user-images.githubusercontent.com/2003143/29374843-1fa78a3e-82c8-11e7-80a3-0786f899749d.png" alt="uniqolor logo" />
 </p>
 <p align="center">
+  <a href="https://travis-ci.org/dastoori/uniqolor"><img src="https://travis-ci.org/dastoori/uniqolor.svg?branch=master" alt="Build status" /></a>
   <a href="https://github.com/dastoori/uniqolor/releases"><img src="https://img.shields.io/github/release/dastoori/uniqolor.svg" alt="GitHub release" /></a>
-  <a href="https://www.npmjs.com/package/uniqolor"><img src="https://img.shields.io/npm/dm/uniqolor.svg" alt="npm" /></a>
+  <a href="https://www.npmjs.com/package/uniqolor"><img src="https://img.shields.io/npm/dm/uniqolor.svg" alt="npm downloads" /></a>
   <a href="https://raw.githubusercontent.com/dastoori/uniqolor/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" /></a></p>
 </p>
 
@@ -92,16 +93,16 @@ Generate unique color from `value`
 
 **Params:**
 
-- `value` (`string`|`number`)
-- `options` (`Object`, default: `{}`)
-- `options.format` (`string`, default: `'hex'`): The color format, it can be one of `hex`, `rgb` or `hsl`
-- `options.saturateRange` (`number|Array`, default: `[50, 55]`): Determines the color saturate, it can be a number or a range between 0 and 100
-- `options.lightnessRange` (`number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
+- `value` (type: `string|number`)
+- `options` (type: `Object`, default: `{}`)
+- `options.format` (type: `string`, default: `'hex'`): The color format, it can be one of `hex`, `rgb` or `hsl`
+- `options.saturateRange` (type: `number|Array`, default: `[50, 55]`): Determines the color saturate, it can be a number or a range between 0 and 100
+- `options.lightnessRange` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 
 **Output:**
 
-- `color` (`string`): The generated color
-- `isLight` (`boolean`): Determines whether the `color` is a light color or a dark color (It's good for choosing a foreground color, like font color)
+- `color` (type: `string`): The generated color
+- `isLight` (type: `boolean`): Determines whether the `color` is a light color or a dark color (It's good for choosing a foreground color, like font color)
 
 ### uniqolor.random([options]) ⇒ `Object`
 
@@ -109,10 +110,10 @@ Generate random color
 
 Params:
 
-- `options` (`Object`, default: `{}`)
-- `options.format` (`string`, default: `'hex'`): The color format, it can be one of `hex`, `rgb` or `hsl`
-- `options.saturateRange` (`number|Array`, default: `[50, 55]`): Determines the color saturate, it can be a number or a range between 0 and 100
-- `options.lightnessRange` (`number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
+- `options` (type: `Object`, default: `{}`)
+- `options.format` (type: `string`, default: `'hex'`): The color format, it can be one of `hex`, `rgb` or `hsl`
+- `options.saturateRange` (type: `number|Array`, default: `[50, 55]`): Determines the color saturate, it can be a number or a range between 0 and 100
+- `options.lightnessRange` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 
 ## Contributing
 

@@ -26,11 +26,12 @@
   "scripts": {
     "build": "rollup -c && rollup -c --environment MINIFY",
     "test": "jest",
-    "lint": "eslint src",
+    "codecov": "jest --coverage",
+    "lint": "eslint --cache src/",
     "validate": "npm run lint && npm test",
     "precommit": "npm run lint",
     "prepush": "npm test",
-    "prepublishOnly": "npm run validate && npm build"
+    "prepublishOnly": "npm run validate && npm run build"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
