@@ -70,7 +70,7 @@ uniqolor(123, {
   saturateRange: [35, 70],
   lightnessRange: 25,
 })
-// { color: "#621d1e", isLight: false }
+// { color: "#405926", isLight: false }
 
 /* Generate random color */
 
