@@ -120,4 +120,6 @@ Your ideas and contributions are welcome; check out our [contributing guide](htt
 
 ## [License](https://github.com/dastoori/uniqolor/blob/master/LICENSE.md)
 
+The unicorn shape in the logo made by [Freepik](https://www.freepik.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+
 MIT © 2017 Rasool Dastoori
