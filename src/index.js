@@ -47,7 +47,7 @@ const boundHashCode = (num, range) => {
 const sanitizeRange = (range, bound) => {
   if (typeof range === 'number') {
     return clamp(Math.abs(range), ...bound);
-  } else if (range.length === 1) {
+  } else if (range.length === 1 || range[0] === range[1]) {
     return clamp(Math.abs(range[0]), ...bound);
   }
 
