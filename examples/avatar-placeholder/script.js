@@ -17,15 +17,16 @@
   fetch('users.json')
     .then(res => res.json())
     .then(res => {
-      res.forEach(user => {
+      for (let i = res.length - 1; i >= 0; i--) {
+        const user = res[i];
         const name = (`${user.name} ${user.surname}`).trim();
         const userColor = window.uniqolor(name, {
-          saturateRange: [50, 80],
-          lightnessRange: [50, 65],
+          saturation: i * 0.9,
+          lightness: i,
         });
 
         $users.append(createUserElement(name, userColor));
-      });
+      }
     });
 }());
 
