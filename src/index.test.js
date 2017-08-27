@@ -4,9 +4,10 @@ describe('src/index', () => {
   describe('uniqolor()', () => {
     const commonOptions = {
       format: 'hex',
-      saturateRange: 40,
-      lightnessRange: 50,
+      saturation: 40,
+      lightness: 50,
     };
+    const hslPattern = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
 
     it('should generate color from text', () => {
       const result = uniqolor('foobar', commonOptions);
@@ -31,7 +32,7 @@ describe('src/index', () => {
 
       expect(result).toEqual({
         color: '#4db35f',
-        isLight: false,
+        isLight: true,
       });
     });
 
@@ -68,12 +69,12 @@ describe('src/index', () => {
       });
     });
 
-    it('should use `saturateRange` and `lightnessRange` options', () => {
+    it('should use `saturation` and `lightness` options', () => {
       const pattern = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
       const options = {
         format: 'hsl',
-        saturateRange: 12,
-        lightnessRange: 76,
+        saturation: 12,
+        lightness: 76,
       };
       const result = uniqolor('foobar', options);
 
@@ -82,43 +83,52 @@ describe('src/index', () => {
 
       const [,, s, l] = pattern.exec(result.color);
 
-      expect(+s).toBe(options.saturateRange);
-      expect(+l).toBe(options.lightnessRange);
+      expect(+s).toBe(options.saturation);
+      expect(+l).toBe(options.lightness);
     });
 
     it('should set `isLight` property based on the color brightness', () => {
       const options = {
         format: 'hsl',
-        saturateRange: 40,
-        lightnessRange: 20,
+        saturation: 40,
+        lightness: 20,
       };
-      const pattern = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
       let result = uniqolor('foobar', options);
 
-      expect(result.color).toMatch(pattern);
+      expect(result.color).toMatch(hslPattern);
       expect(result.isLight).toBe(false);
 
-      let match = pattern.exec(result.color);
+      let match = hslPattern.exec(result.color);
 
-      expect(+match[2]).toBe(options.saturateRange);
-      expect(+match[3]).toBe(options.lightnessRange);
+      expect(+match[2]).toBe(options.saturation);
+      expect(+match[3]).toBe(options.lightness);
 
-      options.lightnessRange = 80;
+      options.lightness = 80;
       result = uniqolor('foobar', options);
 
       expect(result.isLight).toBe(true);
 
-      match = pattern.exec(result.color);
+      match = hslPattern.exec(result.color);
 
-      expect(+match[3]).toBe(options.lightnessRange);
+      expect(+match[3]).toBe(options.lightness);
+    });
+
+    it('should use `differencePoint` options', () => {
+      const result = uniqolor('foobar', {
+        saturation: 40,
+        lightness: 20,
+        differencePoint: 0,
+      });
+
+      expect(result.isLight).toBe(true);
     });
   });
 
   describe('uniqolor.random()', () => {
     const commonOptions = {
       format: 'hex',
-      saturateRange: 40,
-      lightnessRange: 50,
+      saturation: 40,
+      lightness: 50,
     };
 
     it('should generate random HEX color', () => {
@@ -142,8 +152,8 @@ describe('src/index', () => {
       const pattern = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
       const result = uniqolor.random({
         format: 'hsl',
-        saturateRange: 40,
-        lightnessRange: 50,
+        saturation: 40,
+        lightness: 50,
       });
 
       expect(result.color).toMatch(pattern);
@@ -151,8 +161,8 @@ describe('src/index', () => {
 
       const [,, s, l] = pattern.exec(result.color);
 
-      expect(+s).toBe(commonOptions.saturateRange);
-      expect(+l).toBe(commonOptions.lightnessRange);
+      expect(+s).toBe(commonOptions.saturation);
+      expect(+l).toBe(commonOptions.lightness);
     });
   });
 });

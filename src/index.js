@@ -1,4 +1,4 @@
-const SATURATE_BOUND = [0, 100];
+const SATURATION_BOUND = [0, 100];
 const LIGHTNESS_BOUND = [0, 100];
 
 const pad2 = str => `${str.length === 1 ? '0' : ''}${str}`;
@@ -121,12 +121,14 @@ const hslToRgb = (h, s, l) => {
 /**
  * Determines whether the RGB color is light or not
  * http://www.w3.org/TR/AERT#color-contrast
- * @param  {number}  r Red
- * @param  {number}  g Green
- * @param  {number}  b Blue
+ * @param  {number}  r               Red
+ * @param  {number}  g               Green
+ * @param  {number}  b               Blue
+ * @param  {number}  differencePoint
  * @return {boolean}
  */
-const rgbIsLight = (r, g, b) => ((r * 299) + (g * 587) + (b * 114)) / 1000 >= 140;
+const rgbIsLight = (r, g, b, differencePoint) =>
+  ((r * 299) + (g * 587) + (b * 114)) / 1000 >= differencePoint;
 
 /**
  * Converts an HSL color to string format
@@ -161,10 +163,13 @@ const rgbFormat = (r, g, b, format) => {
  * @param  {Object}        [options={}]
  * @param  {string}        [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {number|Array}  [options.saturateRange=[50, 55]]
- *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {number|Array}  [options.lightnessRange=[50, 60]]
+ * @param  {number|Array}  [options.saturation=[50, 55]]
+ *  Determines the color saturation, it can be a number or a range between 0 and 100
+ * @param  {number|Array}  [options.lightness=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
+ * @param  {number}        [options.differencePoint=130]
+ *  Determines the color brightness difference point. We use it to obtain the `isLight` value
+ *  in the output, it can be a number between 0 and 255
  * @return {Object}
  * @example
  *
@@ -175,27 +180,35 @@ const rgbFormat = (r, g, b, format) => {
  * // { color: "rgb(92, 198, 83)", isLight: true }
  *
  * uniqolor('Hello world!', {
- *   saturateRange: 30,
- *   lightnessRange: [70, 80],
+ *   saturation: 30,
+ *   lightness: [70, 80],
  * })
  * // { color: "#afd2ac", isLight: true }
+ *
+ * uniqolor('Hello world!', {
+ *   saturation: 30,
+ *   lightness: [70, 80],
+ *   differencePoint: 200,
+ * })
+ * // { color: "#afd2ac", isLight: false }
  */
 const uniqolor = (value, {
   format = 'hex',
-  saturateRange = [50, 55],
-  lightnessRange = [50, 60],
+  saturation = [50, 55],
+  lightness = [50, 60],
+  differencePoint = 130,
 } = {}) => {
   const hash = Math.abs(hashCode(String(value)));
   const h = boundHashCode(hash, [0, 360]);
-  const s = boundHashCode(hash, sanitizeRange(saturateRange, SATURATE_BOUND));
-  const l = boundHashCode(hash, sanitizeRange(lightnessRange, LIGHTNESS_BOUND));
+  const s = boundHashCode(hash, sanitizeRange(saturation, SATURATION_BOUND));
+  const l = boundHashCode(hash, sanitizeRange(lightness, LIGHTNESS_BOUND));
   const [r, g, b] = hslToRgb(h, s, l);
 
   return {
     color: format === 'hsl'
       ? hslToString(h, s, l)
       : rgbFormat(r, g, b, format),
-    isLight: rgbIsLight(r, g, b),
+    isLight: rgbIsLight(r, g, b, differencePoint),
   };
 };
 
@@ -204,10 +217,13 @@ const uniqolor = (value, {
  * @param  {Object}       [options={}]
  * @param  {string}       [options.format='hex']
  *  The color format, it can be one of `hex`, `rgb` or `hsl`
- * @param  {number|Array} [options.saturateRange=[50, 55]]
- *  Determines the color saturate, it can be a number or a range between 0 and 100
- * @param  {number|Array} [options.lightnessRange=[50, 60]]
+ * @param  {number|Array} [options.saturation=[50, 55]]
+ *  Determines the color saturation, it can be a number or a range between 0 and 100
+ * @param  {number|Array} [options.lightness=[50, 60]]
  *  Determines the color lightness, it can be a number or a range between 0 and 100
+ * @param  {number}       [options.differencePoint=130]
+ *  Determines the color brightness difference point. We use it to obtain the `isLight` value
+ *  in the output, it can be a number between 0 and 255
  * @return {Object}
  * @example
  *
@@ -218,33 +234,41 @@ const uniqolor = (value, {
  * // { color: "rgb(195, 65, 126)", isLight: false }
  *
  * uniqolor.random({
- *   saturateRange: 30,
- *   lightnessRange: [70, 80],
+ *   saturation: 30,
+ *   lightness: [70, 80],
  * })
  * // { color: "#c7b9da", isLight: true }
+ * 
+ * uniqolor.random({
+ *   saturation: 30,
+ *   lightness: [70, 80],
+ *   differencePoint: 255,
+ * })
+ * // { color: "#afd2ac", isLight: false }
  */
 uniqolor.random = ({
   format = 'hex',
-  saturateRange = [50, 55],
-  lightnessRange = [50, 60],
+  saturation = [50, 55],
+  lightness = [50, 60],
+  differencePoint = 130,
 } = {}) => {
-  saturateRange = sanitizeRange(saturateRange, SATURATE_BOUND);
-  lightnessRange = sanitizeRange(lightnessRange, LIGHTNESS_BOUND);
+  saturation = sanitizeRange(saturation, SATURATION_BOUND);
+  lightness = sanitizeRange(lightness, LIGHTNESS_BOUND);
 
   const h = random(0, 360);
-  const s = typeof saturateRange === 'number'
-    ? saturateRange
-    : random(...saturateRange);
-  const l = typeof lightnessRange === 'number'
-    ? lightnessRange
-    : random(...lightnessRange);
+  const s = typeof saturation === 'number'
+    ? saturation
+    : random(...saturation);
+  const l = typeof lightness === 'number'
+    ? lightness
+    : random(...lightness);
   const [r, g, b] = hslToRgb(h, s, l);
 
   return {
     color: format === 'hsl'
       ? hslToString(h, s, l)
       : rgbFormat(r, g, b, format),
-    isLight: rgbIsLight(r, g, b),
+    isLight: rgbIsLight(r, g, b, differencePoint),
   };
 };
 
