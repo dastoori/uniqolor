@@ -10,9 +10,12 @@
     "color",
     "unique",
     "random",
+    "hue",
+    "saturate",
+    "lightness",
     "lightweight",
     "uuid",
-    "generate-color"
+    "generate"
   ],
   "repository": {
     "type": "git",
