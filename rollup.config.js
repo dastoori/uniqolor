@@ -1,5 +1,5 @@
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import { uglify } from 'rollup-plugin-uglify';
 import pkg from './package.json';
 
 const MINIFY = process.env.MINIFY;
@@ -26,12 +26,14 @@ if (MINIFY) {
 }
 
 export default {
-  moduleName: 'uniqolor',
-  entry: 'src/index.js',
-  dest: `dist/uniqolor${extension}`,
-  sourceMap: MINIFY,
-
-  format: 'umd',
+  name: pkg.name,
+  input: 'src/index.js',
+  output: {
+    name: pkg.name,
+    file: `dist/${pkg.name}${extension}`,
+    format: 'umd',
+    sourcemap: MINIFY,
+  },
   banner,
   plugins,
 };

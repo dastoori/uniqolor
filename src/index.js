@@ -47,7 +47,9 @@ const boundHashCode = (num, range) => {
 const sanitizeRange = (range, bound) => {
   if (typeof range === 'number') {
     return clamp(Math.abs(range), ...bound);
-  } else if (range.length === 1 || range[0] === range[1]) {
+  }
+
+  if (range.length === 1 || range[0] === range[1]) {
     return clamp(Math.abs(range[0]), ...bound);
   }
 
@@ -72,9 +74,13 @@ const hueToRgb = (p, q, t) => {
 
   if (t < 1 / 6) {
     return p + ((q - p) * 6 * t);
-  } else if (t < 1 / 2) {
+  }
+
+  if (t < 1 / 2) {
     return q;
-  } else if (t < 2 / 3) {
+  }
+
+  if (t < 2 / 3) {
     return p + ((q - p) * ((2 / 3) - t) * 6);
   }
 
@@ -127,8 +133,7 @@ const hslToRgb = (h, s, l) => {
  * @param  {number}  differencePoint
  * @return {boolean}
  */
-const rgbIsLight = (r, g, b, differencePoint) =>
-  ((r * 299) + (g * 587) + (b * 114)) / 1000 >= differencePoint;
+const rgbIsLight = (r, g, b, differencePoint) => ((r * 299) + (g * 587) + (b * 114)) / 1000 >= differencePoint; // eslint-disable-line max-len
 
 /**
  * Converts an HSL color to string format
@@ -238,7 +243,7 @@ const uniqolor = (value, {
  *   lightness: [70, 80],
  * })
  * // { color: "#c7b9da", isLight: true }
- * 
+ *
  * uniqolor.random({
  *   saturation: 30,
  *   lightness: [70, 80],
@@ -273,4 +278,3 @@ uniqolor.random = ({
 };
 
 export default uniqolor;
-

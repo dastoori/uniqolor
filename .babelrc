@@ -1,22 +1,29 @@
 {
   "env": {
     "test": {
-      "presets": ["env"],
-      "plugins": ["transform-object-rest-spread"]
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
     },
     "development": {
       "presets": [
-        ["env", {
-          "modules": false,
-          "targets": {
-            "browsers": "last 2 versions",
-            "uglify": true
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "targets": {
+              "browsers": "last 2 versions",
+              "uglify": true
+            }
           }
-        }]
-      ],
-      "plugins": [
-        "external-helpers",
-        "transform-object-rest-spread"
+        ]
       ]
     }
   }
