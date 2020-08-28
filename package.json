@@ -4,6 +4,7 @@
   "description": "Generate unique and beautiful colors from any texts or numbers",
   "author": "Rasool Dastoori",
   "main": "dist/uniqolor.js",
+  "types": "src/index.d.ts",
   "keywords": [
     "uniqolor",
     "uniqcolor",
