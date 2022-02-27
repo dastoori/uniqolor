@@ -1,11 +1,11 @@
 import babel from 'rollup-plugin-babel';
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const { MINIFY } = process.env;
 const extension = MINIFY ? '.min.js' : '.js';
 const banner = `/**
- * ${pkg.description}
+* ${pkg.description}
  * @version v${pkg.version}
  * @link ${pkg.homepage}
  * @author ${pkg.author}
@@ -16,22 +16,17 @@ const plugins = [
 ];
 
 if (MINIFY) {
-  plugins.push(uglify({
-    output: {
-      comments: (node, comment) => comment.type === 'comment2' && /@license/i.test(comment.value),
-    },
-  }));
+  plugins.push(terser());
 }
 
 export default {
-  name: pkg.name,
   input: 'src/index.js',
   output: {
     name: pkg.name,
     file: `dist/${pkg.name}${extension}`,
     format: 'umd',
     sourcemap: MINIFY,
+    banner,
   },
-  banner,
   plugins,
 };
