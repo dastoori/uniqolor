@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/dastoori/uniqolor"><img src="https://api.travis-ci.org/dastoori/uniqolor.svg?branch=master" alt="Build status" /></a>
+  <a href="https://travis-ci.com/dastoori/uniqolor"><img src="https://api.travis-ci.com/dastoori/uniqolor.svg?branch=master" alt="Build status" /></a>
   <a href="https://codecov.io/gh/dastoori/uniqolor"><img src="https://img.shields.io/codecov/c/github/dastoori/uniqolor.svg" alt="Coverage report" /></a>
   <a href="https://github.com/dastoori/uniqolor/releases"><img src="https://img.shields.io/github/release/dastoori/uniqolor.svg" alt="GitHub release" /></a>
   <br />
