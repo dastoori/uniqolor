@@ -91,19 +91,26 @@ uniqolor(123, {
 })
 // { color: "#405926", isLight: true }
 
-/* Generate random color */
-
+// Generate random color
 uniqolor.random()
 // { color: "#644cc8", isLight: false }
 
+// Generate a random color with HSL format
 uniqolor.random({ format: 'hsl' })
 // { color: "hsl(89, 55%, 60%)", isLight: true }
 
+// Generate a random color in specific saturation and lightness
 uniqolor.random({
   saturation: 80,
   lightness: [70, 80],
 })
 // { color: "#c7b9da", isLight: true }
+
+// Generate a random color but exclude red color range
+uniqolor.random({
+  excludeHue: [[0, 20], [325, 359]],
+})
+// {color: '#53caab', isLight: true}
 ```
 
 # Examples
@@ -140,7 +147,8 @@ Params:
 - `options.format` (type: `string`, default: `'hex'`): The color format, it can be one of `hex`, `rgb` or `hsl`
 - `options.saturation` (type: `number|Array`, default: `[50, 55]`): Determines the color saturation, it can be a number or a range between 0 and 100
 - `options.lightness` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
-- `options.differencePoint` (type: `number`, defualt: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
+- `options.differencePoint` (type: `number`, default: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
+- `options.excludeHue` (type: `Array`): Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`.
 
 # Contributing
 

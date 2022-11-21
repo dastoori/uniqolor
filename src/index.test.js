@@ -1,5 +1,8 @@
 import uniqolor from './index';
 
+const HEX_PATTERN = /^#[0-9a-f]{6}$/;
+const HSL_PATTERN = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
+
 describe('src/index', () => {
   describe('uniqolor()', () => {
     const commonOptions = {
@@ -134,7 +137,7 @@ describe('src/index', () => {
     it('should generate random HEX color', () => {
       const result = uniqolor.random(commonOptions);
 
-      expect(result.color).toMatch(/^#[0-9a-f]{6}$/);
+      expect(result.color).toMatch(HEX_PATTERN);
       expect(typeof result.isLight).toBe('boolean');
     });
 
@@ -149,20 +152,38 @@ describe('src/index', () => {
     });
 
     it('should generate random HSL color', () => {
-      const pattern = /^hsl\((\d{1,3}), (\d{1,3})%, (\d{1,3})%\)$/;
       const result = uniqolor.random({
         format: 'hsl',
         saturation: 40,
         lightness: 50,
       });
 
-      expect(result.color).toMatch(pattern);
+      expect(result.color).toMatch(HSL_PATTERN);
       expect(typeof result.isLight).toBe('boolean');
 
-      const [,, s, l] = pattern.exec(result.color);
+      const [,, s, l] = HSL_PATTERN.exec(result.color);
 
       expect(+s).toBe(commonOptions.saturation);
       expect(+l).toBe(commonOptions.lightness);
+    });
+
+    it('should exclude a range of hue', () => {
+      const options = {
+        ...commonOptions,
+        format: 'hsl',
+        excludeHue: [[0, 20], [325, 359]],
+      };
+
+      for (let i = 0; i <= 1000; i++) {
+        const result = uniqolor.random(options);
+
+        expect(result.color).toMatch(HSL_PATTERN);
+
+        const [, h] = HSL_PATTERN.exec(result.color);
+
+        expect(+h).toBeGreaterThan(20);
+        expect(+h).toBeLessThan(325);
+      }
     });
   });
 });

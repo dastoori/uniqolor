@@ -1,9 +1,13 @@
 declare module "uniqolor" {
-  interface Options {
+  interface BaseOptions {
     format?: "rgb" | "hsl" | "hex";
     saturation?: number | number[];
     lightness?: number | number[];
     differencePoint?: number;
+  }
+
+  interface RandomOptions extends BaseOptions {
+    excludeHue?: number[][];
   }
 
   interface Color {
@@ -12,8 +16,8 @@ declare module "uniqolor" {
   }
 
   interface Uniqolor {
-    (value: string | number, options?: Options): Color;
-    random: (options?: Options) => Color;
+    (value: string | number, options?: BaseOptions): Color;
+    random: (options?: RandomOptions) => Color;
   }
 
   const uniqolor: Uniqolor;

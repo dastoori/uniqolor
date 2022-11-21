@@ -7,6 +7,20 @@ const clamp = (num, min, max) => Math.max(Math.min(num, max), min);
 
 const random = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
 
+const randomExclude = (min, max, exclude) => {
+  const r = random(min, max);
+
+  for (let i = 0; i < exclude?.length; i++) {
+    const value = exclude[i];
+
+    if (value?.length === 2 && r >= value[0] && r <= value[1]) {
+      return randomExclude(min, max, exclude);
+    }
+  }
+
+  return r;
+};
+
 /**
  * Generate hashCode
  * @param  {string} str
@@ -178,6 +192,7 @@ const rgbFormat = (r, g, b, format) => {
  * @return {Object}
  * @example
  *
+ * ```js
  * uniqolor('Hello world!')
  * // { color: "#5cc653", isLight: true }
  *
@@ -196,6 +211,7 @@ const rgbFormat = (r, g, b, format) => {
  *   differencePoint: 200,
  * })
  * // { color: "#afd2ac", isLight: false }
+ * ```
  */
 const uniqolor = (value, {
   format = 'hex',
@@ -229,38 +245,45 @@ const uniqolor = (value, {
  * @param  {number}       [options.differencePoint=130]
  *  Determines the color brightness difference point. We use it to obtain the `isLight` value
  *  in the output, it can be a number between 0 and 255
+ * @param  {Array}        [options.excludeHue]
+ *  Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`
  * @return {Object}
  * @example
  *
+ * ```js
+ * // Generate random color
  * uniqolor.random()
  * // { color: "#644cc8", isLight: false }
  *
- * uniqolor.random({ format: 'rgb' })
- * // { color: "rgb(195, 65, 126)", isLight: false }
+ * // Generate a random color with HSL format
+ * uniqolor.random({ format: 'hsl' })
+ * // { color: "hsl(89, 55%, 60%)", isLight: true }
  *
+ * // Generate a random color in specific saturation and lightness
  * uniqolor.random({
- *   saturation: 30,
+ *   saturation: 80,
  *   lightness: [70, 80],
  * })
  * // { color: "#c7b9da", isLight: true }
  *
+ * // Generate a random color but exclude red color range
  * uniqolor.random({
- *   saturation: 30,
- *   lightness: [70, 80],
- *   differencePoint: 255,
+ *   excludeHue: [[0, 20], [325, 359]],
  * })
- * // { color: "#afd2ac", isLight: false }
+ * // {color: '#53caab', isLight: true}
+ * ```
  */
 uniqolor.random = ({
   format = 'hex',
   saturation = [50, 55],
   lightness = [50, 60],
   differencePoint = 130,
+  excludeHue,
 } = {}) => {
   saturation = sanitizeRange(saturation, SATURATION_BOUND);
   lightness = sanitizeRange(lightness, LIGHTNESS_BOUND);
 
-  const h = random(0, 360);
+  const h = excludeHue ? randomExclude(0, 359, excludeHue) : random(0, 359);
   const s = typeof saturation === 'number'
     ? saturation
     : random(...saturation);
