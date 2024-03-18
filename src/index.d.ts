@@ -21,5 +21,6 @@ declare module "uniqolor" {
   }
 
   const uniqolor: Uniqolor;
-  export = uniqolor;
+  export function random(options?: RandomOptions): Color;
+  export default uniqolor;
 }
