@@ -53,6 +53,53 @@ const boundHashCode = (num, range) => {
 };
 
 /**
+ * Picks a hue within `[0, 359]` that is not inside any of the `exclude`
+ * ranges, deterministically based on `num`
+ * @param  {number} num
+ * @param  {Array}  exclude Array of `[start, end]` hue ranges to exclude
+ * @return {number}
+ */
+const boundHashCodeExcludeHue = (num, exclude) => {
+  const merged = exclude
+    .filter(range => range?.length === 2)
+    .map(range => [
+      clamp(Math.min(range[0], range[1]), 0, 359),
+      clamp(Math.max(range[0], range[1]), 0, 359),
+    ])
+    .sort((a, b) => a[0] - b[0])
+    .reduce((acc, range) => {
+      const last = acc[acc.length - 1];
+
+      if (last && range[0] <= last[1] + 1) {
+        last[1] = Math.max(last[1], range[1]);
+      } else {
+        acc.push(range);
+      }
+
+      return acc;
+    }, []);
+  const allowedCount = merged.reduce((count, range) => count - ((range[1] - range[0]) + 1), 360);
+
+  if (allowedCount <= 0) {
+    return num % 360;
+  }
+
+  let hue = num % allowedCount;
+
+  for (let i = 0; i < merged.length; i++) {
+    const [start, end] = merged[i];
+
+    if (hue < start) {
+      break;
+    }
+
+    hue += (end - start) + 1;
+  }
+
+  return hue;
+};
+
+/**
  * Sanitizing the `range`
  * @param  {number|Array} range
  * @param  {Array}        bound
@@ -189,6 +236,8 @@ const rgbFormat = (r, g, b, format) => {
  * @param  {number}        [options.differencePoint=130]
  *  Determines the color brightness difference point. We use it to obtain the `isLight` value
  *  in the output, it can be a number between 0 and 255
+ * @param  {Array}         [options.excludeHue]
+ *  Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`
  * @return {Object}
  * @example
  *
@@ -211,6 +260,11 @@ const rgbFormat = (r, g, b, format) => {
  *   differencePoint: 200,
  * })
  * // { color: "#afd2ac", isLight: false }
+ *
+ * uniqolor('Hello world!', {
+ *   excludeHue: [[0, 20], [325, 359]],
+ * })
+ * // { color: "#71c653", isLight: true }
  * ```
  */
 const uniqolor = (value, {
@@ -218,9 +272,12 @@ const uniqolor = (value, {
   saturation = [50, 55],
   lightness = [50, 60],
   differencePoint = 130,
+  excludeHue,
 } = {}) => {
   const hash = Math.abs(hashCode(String(value)));
-  const h = boundHashCode(hash, [0, 360]);
+  const h = excludeHue
+    ? boundHashCodeExcludeHue(hash, excludeHue)
+    : boundHashCode(hash, [0, 360]);
   const s = boundHashCode(hash, sanitizeRange(saturation, SATURATION_BOUND));
   const l = boundHashCode(hash, sanitizeRange(lightness, LIGHTNESS_BOUND));
   const [r, g, b] = hslToRgb(h, s, l);

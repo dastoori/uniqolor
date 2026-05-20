@@ -91,6 +91,12 @@ uniqolor(123, {
 })
 // { color: "#405926", isLight: true }
 
+// Generate a unique color but exclude red color range
+uniqolor('Hello world!', {
+  excludeHue: [[0, 20], [325, 359]],
+})
+// { color: "#71c653", isLight: true }
+
 // Generate random color
 uniqolor.random()
 // { color: "#644cc8", isLight: false }
@@ -131,6 +137,7 @@ Generate unique color from `value`
 - `options.saturation` (type: `number|Array`, default: `[50, 55]`): Determines the color saturation, it can be a number or a range between 0 and 100
 - `options.lightness` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 - `options.differencePoint` (type: `number`, defualt: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
+- `options.excludeHue` (type: `Array`): Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`.
 
 **Output:**
 
