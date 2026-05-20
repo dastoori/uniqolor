@@ -125,6 +125,34 @@ describe('src/index', () => {
 
       expect(result.isLight).toBe(true);
     });
+
+    it('should exclude a range of hue', () => {
+      const options = {
+        ...commonOptions,
+        format: 'hsl',
+        excludeHue: [[0, 20], [325, 359]],
+      };
+
+      for (let i = 0; i <= 1000; i++) {
+        const result = uniqolor(`value-${i}`, options);
+
+        expect(result.color).toMatch(hslPattern);
+
+        const [, h] = hslPattern.exec(result.color);
+
+        expect(+h).toBeGreaterThan(20);
+        expect(+h).toBeLessThan(325);
+      }
+    });
+
+    it('should generate the same color for the same value when excluding hue', () => {
+      const options = {
+        ...commonOptions,
+        excludeHue: [[0, 20], [325, 359]],
+      };
+
+      expect(uniqolor('foobar', options)).toEqual(uniqolor('foobar', options));
+    });
   });
 
   describe('uniqolor.random()', () => {
