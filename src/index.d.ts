@@ -4,6 +4,7 @@ declare module "uniqolor" {
     saturation?: number | number[];
     lightness?: number | number[];
     differencePoint?: number;
+    foreground?: boolean;
   }
 
   interface RandomOptions extends BaseOptions {
@@ -13,6 +14,7 @@ declare module "uniqolor" {
   interface Color {
     color: string;
     isLight: boolean;
+    foreground?: string;
   }
 
   interface Uniqolor {

@@ -150,6 +150,13 @@ const hslToRgb = (h, s, l) => {
 const rgbIsLight = (r, g, b, differencePoint) => ((r * 299) + (g * 587) + (b * 114)) / 1000 >= differencePoint; // eslint-disable-line max-len
 
 /**
+ * Picks a readable foreground color based on the background's `isLight` value
+ * @param  {boolean} isLight
+ * @return {string}  `#000000` on light backgrounds, `#ffffff` on dark backgrounds
+ */
+const pickForeground = isLight => (isLight ? '#000000' : '#ffffff');
+
+/**
  * Converts an HSL color to string format
  * @param  {number} h Hue
  * @param  {number} s Saturation
@@ -189,6 +196,9 @@ const rgbFormat = (r, g, b, format) => {
  * @param  {number}        [options.differencePoint=130]
  *  Determines the color brightness difference point. We use it to obtain the `isLight` value
  *  in the output, it can be a number between 0 and 255
+ * @param  {boolean}       [options.foreground=false]
+ *  When `true`, the result also includes a `foreground` color (`#000000` or `#ffffff`)
+ *  that contrasts with the generated color
  * @return {Object}
  * @example
  *
@@ -211,6 +221,9 @@ const rgbFormat = (r, g, b, format) => {
  *   differencePoint: 200,
  * })
  * // { color: "#afd2ac", isLight: false }
+ *
+ * uniqolor('Hello world!', { foreground: true })
+ * // { color: "#5cc653", isLight: true, foreground: "#000000" }
  * ```
  */
 const uniqolor = (value, {
@@ -218,18 +231,21 @@ const uniqolor = (value, {
   saturation = [50, 55],
   lightness = [50, 60],
   differencePoint = 130,
+  foreground = false,
 } = {}) => {
   const hash = Math.abs(hashCode(String(value)));
   const h = boundHashCode(hash, [0, 360]);
   const s = boundHashCode(hash, sanitizeRange(saturation, SATURATION_BOUND));
   const l = boundHashCode(hash, sanitizeRange(lightness, LIGHTNESS_BOUND));
   const [r, g, b] = hslToRgb(h, s, l);
+  const isLight = rgbIsLight(r, g, b, differencePoint);
 
   return {
     color: format === 'hsl'
       ? hslToString(h, s, l)
       : rgbFormat(r, g, b, format),
-    isLight: rgbIsLight(r, g, b, differencePoint),
+    isLight,
+    ...(foreground && { foreground: pickForeground(isLight) }),
   };
 };
 
@@ -247,6 +263,9 @@ const uniqolor = (value, {
  *  in the output, it can be a number between 0 and 255
  * @param  {Array}        [options.excludeHue]
  *  Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`
+ * @param  {boolean}      [options.foreground=false]
+ *  When `true`, the result also includes a `foreground` color (`#000000` or `#ffffff`)
+ *  that contrasts with the generated color
  * @return {Object}
  * @example
  *
@@ -271,6 +290,10 @@ const uniqolor = (value, {
  *   excludeHue: [[0, 20], [325, 359]],
  * })
  * // {color: '#53caab', isLight: true}
+ *
+ * // Generate a random color and pair it with a readable foreground
+ * uniqolor.random({ foreground: true })
+ * // { color: "#644cc8", isLight: false, foreground: "#ffffff" }
  * ```
  */
 uniqolor.random = ({
@@ -279,6 +302,7 @@ uniqolor.random = ({
   lightness = [50, 60],
   differencePoint = 130,
   excludeHue,
+  foreground = false,
 } = {}) => {
   saturation = sanitizeRange(saturation, SATURATION_BOUND);
   lightness = sanitizeRange(lightness, LIGHTNESS_BOUND);
@@ -291,12 +315,14 @@ uniqolor.random = ({
     ? lightness
     : random(...lightness);
   const [r, g, b] = hslToRgb(h, s, l);
+  const isLight = rgbIsLight(r, g, b, differencePoint);
 
   return {
     color: format === 'hsl'
       ? hslToString(h, s, l)
       : rgbFormat(r, g, b, format),
-    isLight: rgbIsLight(r, g, b, differencePoint),
+    isLight,
+    ...(foreground && { foreground: pickForeground(isLight) }),
   };
 };
 
