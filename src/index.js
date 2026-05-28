@@ -357,4 +357,68 @@ uniqolor.random = ({
   };
 };
 
+/**
+ * Generate a harmonious palette of `count` colors from `value`. Hues are
+ * evenly spaced around the wheel starting at the seed-derived base hue, so
+ * the palette shares one saturation/lightness shade and feels cohesive. The
+ * first entry matches the color `uniqolor(value, options)` would return for
+ * the same options.
+ * @param  {string|number} value
+ * @param  {number}        [count=5]    Number of colors in the palette (>= 1)
+ * @param  {Object}        [options={}]
+ * @param  {string}        [options.format='hex']
+ *  The color format, it can be one of `hex`, `rgb` or `hsl`
+ * @param  {number|Array}  [options.saturation=[50, 55]]
+ *  Determines the color saturation, it can be a number or a range between 0 and 100
+ * @param  {number|Array}  [options.lightness=[50, 60]]
+ *  Determines the color lightness, it can be a number or a range between 0 and 100
+ * @param  {number}        [options.differencePoint=130]
+ *  Determines the color brightness difference point. We use it to obtain the `isLight` value
+ *  in the output, it can be a number between 0 and 255
+ * @param  {Array}         [options.excludeHue]
+ *  Exclude certain hue ranges. Hues are then spaced evenly across the remaining allowed wheel.
+ * @return {Array<Object>}
+ * @example
+ *
+ * ```js
+ * uniqolor.palette('Hello world!', 3)
+ * // [
+ * //   { color: "#5cc653", isLight: true },
+ * //   { color: "#5354c6", isLight: false },
+ * //   { color: "#c65395", isLight: false },
+ * // ]
+ * ```
+ */
+uniqolor.palette = (value, count = 5, {
+  format = 'hex',
+  saturation = [50, 55],
+  lightness = [50, 60],
+  differencePoint = 130,
+  excludeHue,
+} = {}) => {
+  const safeCount = Math.max(1, Math.floor(count));
+  const hash = Math.abs(hashCode(String(value)));
+  const s = boundHashCode(hash, sanitizeRange(saturation, SATURATION_BOUND));
+  const l = boundHashCode(hash, sanitizeRange(lightness, LIGHTNESS_BOUND));
+  const step = 360 / safeCount;
+  const result = new Array(safeCount);
+
+  for (let i = 0; i < safeCount; i++) {
+    const offset = Math.round(step * i);
+    const h = excludeHue
+      ? boundHashCodeExcludeHue(hash + offset, excludeHue)
+      : boundHashCode(hash + offset, [0, 360]);
+    const [r, g, b] = hslToRgb(h, s, l);
+
+    result[i] = {
+      color: format === 'hsl'
+        ? hslToString(h, s, l)
+        : rgbFormat(r, g, b, format),
+      isLight: rgbIsLight(r, g, b, differencePoint),
+    };
+  }
+
+  return result;
+};
+
 export default uniqolor;

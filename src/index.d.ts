@@ -14,9 +14,12 @@ declare module "uniqolor" {
     isLight: boolean;
   }
 
+  interface PaletteOptions extends BaseOptions {}
+
   interface Uniqolor {
     (value: string | number, options?: BaseOptions): Color;
     random: (options?: RandomOptions) => Color;
+    palette: (value: string | number, count?: number, options?: PaletteOptions) => Color[];
   }
 
   const uniqolor: Uniqolor;

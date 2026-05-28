@@ -214,4 +214,89 @@ describe('src/index', () => {
       }
     });
   });
+
+  describe('uniqolor.palette()', () => {
+    const commonOptions = {
+      format: 'hex',
+      saturation: 40,
+      lightness: 50,
+    };
+
+    it('should default to 5 colors', () => {
+      const result = uniqolor.palette('Hello world!', undefined, commonOptions);
+
+      expect(result).toHaveLength(5);
+      result.forEach(entry => {
+        expect(entry.color).toMatch(HEX_PATTERN);
+        expect(typeof entry.isLight).toBe('boolean');
+      });
+    });
+
+    it('should generate a palette of the requested size', () => {
+      [1, 3, 8, 12].forEach(count => {
+        const result = uniqolor.palette('foobar', count, commonOptions);
+
+        expect(result).toHaveLength(count);
+      });
+    });
+
+    it('should coerce non-integer or sub-1 counts to at least 1', () => {
+      expect(uniqolor.palette('foobar', 0, commonOptions)).toHaveLength(1);
+      expect(uniqolor.palette('foobar', -3, commonOptions)).toHaveLength(1);
+      expect(uniqolor.palette('foobar', 4.7, commonOptions)).toHaveLength(4);
+    });
+
+    it('should be deterministic for the same input', () => {
+      const a = uniqolor.palette('Hello world!', 5, commonOptions);
+      const b = uniqolor.palette('Hello world!', 5, commonOptions);
+
+      expect(a).toEqual(b);
+    });
+
+    it('should have the first entry match `uniqolor(value)`', () => {
+      const palette = uniqolor.palette('foobar', 5, commonOptions);
+      const single = uniqolor('foobar', commonOptions);
+
+      expect(palette[0]).toEqual(single);
+    });
+
+    it('should produce a known palette for a fixed seed', () => {
+      const result = uniqolor.palette('foobar', 3, commonOptions);
+
+      expect(result).toEqual([
+        { color: '#964db3', isLight: false },
+        { color: '#b3964d', isLight: true },
+        { color: '#4db396', isLight: true },
+      ]);
+    });
+
+    it('should support `format: hsl` and `format: rgb`', () => {
+      const hsl = uniqolor.palette('foobar', 4, { ...commonOptions, format: 'hsl' });
+      const rgb = uniqolor.palette('foobar', 4, { ...commonOptions, format: 'rgb' });
+
+      hsl.forEach(({ color }) => expect(color).toMatch(HSL_PATTERN));
+      rgb.forEach(({ color }) => expect(color).toMatch(/^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/));
+    });
+
+    it('should keep every entry outside excluded hue ranges', () => {
+      const options = {
+        ...commonOptions,
+        format: 'hsl',
+        excludeHue: [[0, 20], [325, 359]],
+      };
+
+      for (let i = 0; i <= 100; i++) {
+        const palette = uniqolor.palette(`seed-${i}`, 8, options);
+
+        palette.forEach(({ color }) => {
+          expect(color).toMatch(HSL_PATTERN);
+
+          const [, h] = HSL_PATTERN.exec(color);
+
+          expect(+h).toBeGreaterThan(20);
+          expect(+h).toBeLessThan(325);
+        });
+      }
+    });
+  });
 });

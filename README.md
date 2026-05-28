@@ -117,6 +117,14 @@ uniqolor.random({
   excludeHue: [[0, 20], [325, 359]],
 })
 // {color: '#53caab', isLight: true}
+
+// Generate a deterministic palette of N harmonious colors from one seed
+uniqolor.palette('Hello world!', 3)
+// [
+//   { color: "#5cc653", isLight: true },
+//   { color: "#535cc6", isLight: false },
+//   { color: "#c6535c", isLight: false },
+// ]
 ```
 
 # Examples
@@ -156,6 +164,20 @@ Params:
 - `options.lightness` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 - `options.differencePoint` (type: `number`, default: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
 - `options.excludeHue` (type: `Array`): Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`.
+
+## uniqolor.palette(value, [count], [options]) ⇒ `Array<Object>`
+
+Generate a deterministic palette of `count` harmonious colors from `value`. Hues are evenly spaced around the color wheel starting at the same hue `uniqolor(value)` would pick, so the palette is reproducible from the seed and the first entry matches `uniqolor(value, options)`. Saturation and lightness are shared across the palette to keep it cohesive.
+
+**Params:**
+
+- `value` (type: `string|number`)
+- `count` (type: `number`, default: `5`): Number of colors in the palette (clamped to at least 1, fractional values are floored)
+- `options` (type: `Object`, default: `{}`): Same options as [`uniqolor(value, options)`](#uniqolorvalue-options--object) — `format`, `saturation`, `lightness`, `differencePoint`, `excludeHue`. When `excludeHue` is set, hues are evenly spaced across the remaining allowed wheel.
+
+**Output:**
+
+An array of `count` entries, each an `Object` with the same shape as `uniqolor()`'s output (`{ color, isLight }`).
 
 # Contributing
 
