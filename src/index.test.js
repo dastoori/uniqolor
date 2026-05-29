@@ -125,6 +125,37 @@ describe('src/index', () => {
 
       expect(result.isLight).toBe(true);
     });
+
+    describe('`foreground` option', () => {
+      it('should omit the `foreground` key by default', () => {
+        const result = uniqolor('foobar', commonOptions);
+
+        expect(result).not.toHaveProperty('foreground');
+        expect(Object.keys(result)).toEqual(['color', 'isLight']);
+      });
+
+      it('should return `#ffffff` for dark backgrounds when `foreground: true`', () => {
+        const result = uniqolor('foobar', { ...commonOptions, foreground: true });
+
+        expect(result.isLight).toBe(false);
+        expect(result.foreground).toBe('#ffffff');
+      });
+
+      it('should return `#000000` for light backgrounds when `foreground: true`', () => {
+        const result = uniqolor(14, { ...commonOptions, foreground: true });
+
+        expect(result.isLight).toBe(true);
+        expect(result.foreground).toBe('#000000');
+      });
+
+      it('should not affect `color` or `isLight` when set', () => {
+        const without = uniqolor('foobar', commonOptions);
+        const withFg = uniqolor('foobar', { ...commonOptions, foreground: true });
+
+        expect(withFg.color).toBe(without.color);
+        expect(withFg.isLight).toBe(without.isLight);
+      });
+    });
   });
 
   describe('uniqolor.random()', () => {
@@ -184,6 +215,23 @@ describe('src/index', () => {
         expect(+h).toBeGreaterThan(20);
         expect(+h).toBeLessThan(325);
       }
+    });
+
+    describe('`foreground` option', () => {
+      it('should omit the `foreground` key by default', () => {
+        const result = uniqolor.random(commonOptions);
+
+        expect(result).not.toHaveProperty('foreground');
+        expect(Object.keys(result)).toEqual(['color', 'isLight']);
+      });
+
+      it('should always return `#ffffff` or `#000000` matching `isLight`', () => {
+        for (let i = 0; i < 100; i++) {
+          const result = uniqolor.random({ ...commonOptions, foreground: true });
+
+          expect(result.foreground).toBe(result.isLight ? '#000000' : '#ffffff');
+        }
+      });
     });
   });
 });

@@ -91,6 +91,10 @@ uniqolor(123, {
 })
 // { color: "#405926", isLight: true }
 
+// Generate a color paired with a readable foreground (e.g. for avatar text)
+uniqolor('Hello world!', { foreground: true })
+// { color: "#5cc653", isLight: true, foreground: "#000000" }
+
 // Generate random color
 uniqolor.random()
 // { color: "#644cc8", isLight: false }
@@ -131,11 +135,13 @@ Generate unique color from `value`
 - `options.saturation` (type: `number|Array`, default: `[50, 55]`): Determines the color saturation, it can be a number or a range between 0 and 100
 - `options.lightness` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 - `options.differencePoint` (type: `number`, defualt: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
+- `options.foreground` (type: `boolean`, default: `false`): When `true`, the output also includes a `foreground` color (`#000000` for light backgrounds, `#ffffff` for dark backgrounds) that contrasts with the generated `color`
 
 **Output:**
 
 - `color` (type: `string`): The generated color
 - `isLight` (type: `boolean`): Determines whether the `color` is a light color or a dark color (It's good for choosing a foreground color, like font color)
+- `foreground` (type: `string`, optional): A readable text color (`#000000` or `#ffffff`) returned only when `options.foreground` is `true`
 
 ## uniqolor.random([options]) ⇒ `Object`
 
@@ -149,6 +155,7 @@ Params:
 - `options.lightness` (type: `number|Array`, default: `[50, 60]`): Determines the color lightness, it can be a number or a range between 0 and 100
 - `options.differencePoint` (type: `number`, default: `130`): Determines the color brightness difference point. We use it to obtain the `isLight` value in the output, it can be a number between 0 and 255
 - `options.excludeHue` (type: `Array`): Exclude certain hue ranges. For example to exclude red color range: `[[0, 20], [325, 359]]`.
+- `options.foreground` (type: `boolean`, default: `false`): When `true`, the output also includes a `foreground` color (`#000000` for light backgrounds, `#ffffff` for dark backgrounds) that contrasts with the generated `color`
 
 # Contributing
 
